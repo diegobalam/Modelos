@@ -1,0 +1,51 @@
+#!/bin/bash
+#Nombre del trabajo
+#PBS -N modelo1
+#
+#Archivo de salida
+#PBS -o modelo1.out
+#PBS -e modelo1.err
+#
+#Cola de ejecución (-q cola)
+#
+#PBS -q long
+#Recursos solicitados (nodos, cpus, mem, etc)
+#PBS -l nodes=1:ppn=1
+#PBS -l pmem=4gb
+
+#PBS -M diegobalam@ciencias.unam.mx
+
+#Cargar y/o definir entorno (modulos, variables de ambiente)
+
+module load anaconda3/2020.02
+module load gnu/7.2
+source /software/cosmonag/montepython_public-3.3.4/planck/code/plc_3.0/plc-3.01/bin/clik_profile.sh
+
+#Cambiar al directorio actual
+cd /storage/cosmonag/balam
+
+#Informacion del JOB
+echo ==============================
+echo Ejecutandos en: `hostname`
+echo Fecha: `date`
+echo Directorio: `pwd`
+echo Recursos asignados: 
+echo 	`cat $PBS_NODEFILE`
+NPROCS=`wc -l < $PBS_NODEFILE`
+echo Totla: $NPROCS cpus
+echo ===============================
+cat $PBS_NODEFILE > $HOME/nodos
+echo ===============================
+echo 		 SALIDA
+echo ===============================
+
+#Inicia trabajo
+#JOB MPI
+#mpiexec -n $NPROCS ./job.exe
+
+
+python3 /storage/cosmonag/balam/montepython_public/montepython/MontePython.py run -p /storage/cosmonag/balam/Modelos/input/modelo1.param -o /storage/cosmonag/balam/Modelos/chains/modelo1 -N 25 -f 1.5
+
+#Termina trabajo
+echo ===============================
+
