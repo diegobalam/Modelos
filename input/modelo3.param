@@ -1,0 +1,143 @@
+#------Experiments to test (separated with commas)-----
+data.experiments=['Planck_lowl_TT','sptpol_500d_TEEE','sptpol_500d_lens','bao_fs_boss_dr12','bao_smallz_2014','Pantheon']
+
+#data.experiments=['Planck_highl_TTTEEE','Planck_lowl_TT','Planck_lowl_EE','Planck_lensing','bao_fs_boss_dr12','bao_smallz_2014','H0_local','Pantheon','He']
+
+
+#------ Settings for the over-sampling.
+# The first element will always be set to 1, for it is the sampling of the
+# cosmological parameters. The other numbers describe the over sampling of the
+# nuisance parameter space. This array must have the same dimension as the
+# number of blocks in your run (so, 1 for cosmological parameters, and then 1
+# for each experiment with varying nuisance parameters).
+# Note that when using Planck likelihoods, you definitely want to use [1, 4],
+# to oversample as much as possible the 14 nuisance parameters.
+# Remember to order manually the experiments from slowest to fastest (putting
+# Planck as the first set of experiments should be a safe bet, except if you
+# also have LSS experiments).
+# If you have experiments without nuisance, you do not need to specify an
+# additional entry in the over_sampling list (notice for instance that, out of
+# the three Planck likelihoods used, only Planck_highl requires nuisance
+# parameters, therefore over_sampling has a length of two (cosmology, plus one
+# set of nuisance).
+data.over_sampling=[1, 5,2,1]
+
+#------ Parameter list -------
+
+# data.parameters[class name] = [mean, min, max, 1-sigma, scale, role]
+# - if min max irrelevant, put to None
+# - if fixed, put 1-sigma to 0
+# - if scale irrelevant, put to 1, otherwise to the appropriate factor
+# - role is either 'cosmo', 'nuisance' or 'derived'. You should put the derived
+# parameters at the end, and in case you are using the `-j fast` Cholesky
+# decomposition, you should order your nuisance parameters from slowest to
+# fastest.
+
+# Cosmological parameters list
+
+#data.parameters['logA']    = [3.06,   1.61, 3.91,  0.1,    0.001, 'cosmo']
+#data.parameters['theta_s_le2']    = [1.0415,  0.5, 10,  0.1,    0.0004, 'cosmo']
+data.parameters['omega_b']      = [ 2.28,   None, None,  0.028, 0.01, 'cosmo']
+data.parameters['omega_cdm']    = [0.133,   None, None, 0.0027,    1, 'cosmo']
+data.parameters['n_s']          = [0.99,   0.8, 1.2, 0.0074,    1, 'cosmo']
+data.parameters['tau_reio']     = [0.057,   0.04, None,  0.013,    1, 'cosmo']
+data.parameters['fEDE']    = [0.14,   0.0000001, 0.51,  0.014,    1, 'cosmo']
+data.parameters['log10z_c']    = [3.6,  3, 4.3,  0.08,    1, 'cosmo']
+data.parameters['thetai_scf']    = [2.5,   0.1, 3.1,  0.1,    0.2, 'cosmo']
+
+
+
+
+# Nuisance parameter list, same call, except the name does not have to be a class name
+data.parameters['mapTcal']         = [     1.0,    0.85,  1.15,     0.01,     1,'nuisance']
+data.parameters['mapPcal']         = [     1.0,    0.85,  1.15,     0.01,     1,'nuisance']
+data.parameters['czero_psEE_150']         = [     0.08374169,    0.,  2.5,     0.01,     1,'nuisance']
+data.parameters['czero_psTE_150']         = [     0.,    None,  None,     0.,     1,'nuisance']
+data.parameters['kappa']         = [     0.,    -0.01225,  0.01225,     0.002,     1,'nuisance']
+data.parameters['ADust_TE']         = [     0.1647,    0.,  2.,     0.01,     1,'nuisance']
+data.parameters['ADust_EE']         = [     0.0236,    0.,  2.,     0.001,     1,'nuisance']
+data.parameters['alphaDust_TE']         = [     -2.42,    -5.0,  0.,     0.01,     1,'nuisance']
+data.parameters['alphaDust_EE']         = [     -2.42,    -5.0,  0.,     0.01,     1,'nuisance']
+data.parameters['beam1']         = [     0.,    -10.,  10.,     1.,     1,'nuisance']
+data.parameters['beam2']         = [     0.,    -10.,  10.,     1.,     1,'nuisance']
+data.parameters['Aphiphi']          = [ 1.,   0.,   10.,     0,     1, 'nuisance']
+data.parameters['cib_index']         = [    -1.3,  -1.3,  -1.3,          0,     1, 'nuisance']
+data.parameters['A_sbpx_100_100_TT'] = [       1,     1,     1,          0,     1, 'nuisance']
+data.parameters['A_sbpx_143_143_TT'] = [       1,     1,     1,          0,     1, 'nuisance']
+data.parameters['A_sbpx_143_217_TT'] = [       1,     1,     1,          0,     1, 'nuisance']
+data.parameters['A_sbpx_217_217_TT'] = [       1,     1,     1,          0,     1, 'nuisance']
+data.parameters['A_planck']          = [ 1.00061,   0.9,   1.1,     0.0025,     1, 'nuisance']
+data.parameters['A_pol']             = [       1,     1,     1,          0,     1, 'nuisance']
+
+data.parameters['M']          = [-19.1,   None, None,  0.004,  1,'nuisance']
+
+# Derived parameters
+
+data.parameters['YHe']             = [1, None, None, 0,     1,   'derived']
+data.parameters['H0']              = [0, None, None, 0,     1,   'derived']
+data.parameters['A_s']             = [0, None, None, 0,  1e-9,   'derived']
+data.parameters['sigma8']          = [0, None, None, 0,     1,   'derived']
+data.parameters['z_c']            =[0,None,None,0,1,'derived']  
+#data.parameters['log10f_scf']            =[0,None,None,0,1,'derived'] 
+#data.parameters['m_scf']            =[0,None,None,0,1,'derived']  
+data.parameters['log10f_scf']            =[0,None,None,0,1,'derived']  
+data.parameters['log10m_scf']            =[0,None,None,0,1,'derived']  
+data.parameters['Omega_m']            =[0,None,None,0,1,'derived']  
+#data.parameters['omegamh2']            =[0,None,None,0,1,'derived']  
+data.parameters['z_reio']            =[0,None,None,0,1,'derived']  
+#data.parameters['s8h5']            =[0,None,None,0,1,'derived']  
+#data.parameters['s8omegamp5']            =[0,None,None,0,1,'derived']  
+#data.parameters['s8omegamp5_norm']            =[0,None,None,0,1,'derived']  
+#data.parameters['s8omegamp25']            =[0,None,None,0,1,'derived']  
+#data.parameters['A']            =[0,None,None,0,1,'derived']  
+#data.parameters['clamp']            =[0,None,None,0,1,'derived']  
+data.parameters['age']            =[0,None,None,0,1,'derived']  
+#data.parameters['rs_drag']            =[0,None,None,0,1,'derived']  
+#data.parameters['chi2__CMB']            =[0,None,None,0,1,'derived']  
+#data.parameters['100*theta_s']            =[0,None,None,0,1,'derived']  
+ 
+
+# Other cosmo parameters (fixed parameters, precision parameters, etc.)
+
+data.cosmo_arguments['sBBN file'] = data.path['cosmo']+'/bbn/sBBN_2017.dat'
+data.cosmo_arguments['k_pivot'] = 0.05
+
+
+# The base model features two massless
+# and one massive neutrino with m=0.06eV.
+# The settings below ensures that Neff=3.046
+# and m/omega = 93.14 eV
+
+data.cosmo_arguments['N_ur'] = 2.0328
+data.cosmo_arguments['N_ncdm'] = 1
+data.cosmo_arguments['m_ncdm'] = 0.06
+data.cosmo_arguments['T_ncdm'] = 0.71611
+
+data.cosmo_arguments['z_max_pk'] = 3.5
+data.cosmo_arguments['Omega_Lambda'] = 0.0
+data.cosmo_arguments['Omega_fld'] = 0.0
+data.cosmo_arguments['Omega_scf'] = -1.0
+data.cosmo_arguments['n_scf'] = 3.0
+data.cosmo_arguments['CC_scf'] = 1.0
+data.cosmo_arguments['scf_parameters'] = '1, 1, 1, 1, 1, 0.0'
+data.cosmo_arguments['scf_tuning_index'] = 3.0
+data.cosmo_arguments['attractor_ic_scf'] = 'no'
+
+
+# These two are required to get sigma8 as a derived parameter
+# (class must compute the P(k) until sufficient k)
+data.cosmo_arguments['output'] = 'mPk'
+data.cosmo_arguments['P_k_max_h/Mpc'] = 20.
+
+
+
+
+data.cosmo_arguments['non linear'] = 'halofit'
+
+
+
+
+#------ Mcmc parameters ----
+
+data.N=100
+data.write_step=5
